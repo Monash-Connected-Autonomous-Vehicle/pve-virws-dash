@@ -3,6 +3,8 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import { genericOAuth } from "better-auth/plugins"
 // If your Prisma file is located elsewhere, you can change the path
 import { PrismaClient } from "@prisma/client";
+import { config } from 'dotenv';
+config(); // Loads .env variables into process.env
 
 const prisma = new PrismaClient();
 export const auth = betterAuth({
@@ -17,10 +19,10 @@ export const auth = betterAuth({
         genericOAuth({
             config: [
                 {
-                    providerId: "pve-virws-dash",
-                    clientId: "bUS7muaM5MsCO3Cx91rk4nAwVEjqYy2jUrlFkSfn",
-                    clientSecret: "5fMJb9iM0XD8g2H2CH3Te06pJ4qt3ctTjHLCk47pPropfEt1H9Y2voEw3tMXGuF6ipobRP9YFb1zWLM2ZWxEMEH280gFbA5hPepfiL5LaWyzN6bxBBQ2u2cG5CMNBMCY",
-                    discoveryUrl: "https://identity.monashcav.com/application/o/pve-virws-dash/.well-known/openid-configuration",
+                    providerId: process.env.OAUTH_PROVIDER_ID as string,
+                    clientId: process.env.OAUTH_CLIENT_ID as string,
+                    clientSecret: process.env.OAUTH_CLIENT_SECRET as string,
+                    discoveryUrl: process.env.OAUTH_DISCOVERY_URL as string,
                     // ... other config options
                 },
                 // Add more providers as needed

@@ -2,6 +2,9 @@ import cors from 'cors';
 import express from "express";
 import { toNodeHandler } from "better-auth/node";
 import { auth } from "./auth";
+import { config } from 'dotenv';
+config(); // Loads .env variables into process.env
+
  
 const app = express();
 const port = 3000;

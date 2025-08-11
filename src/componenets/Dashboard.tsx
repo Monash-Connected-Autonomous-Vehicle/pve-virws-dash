@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { VMCard } from "./VMCard";
+import { VMCard, VirWS } from "./VMCard";
 import { CreateVMDialog } from "./CreateVMDialog";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -16,54 +16,69 @@ import {
   HardDrive,
   DollarSign
 } from "lucide-react";
+import axios from "axios";
 
 // Sample data
-const virtualMachines = [
-  {
-    id: "vm-001",
-    name: "production-web-01",
-    status: "running" as const,
-    template: "Ubuntu Server 22.04",
-    cpu: "4 vCPU",
-    memory: "8 GB",
-    storage: "100 GB",
-    ipAddress: "192.168.1.10",
-    createdAt: "2024-01-15"
-  },
-  {
-    id: "vm-002", 
-    name: "database-primary",
-    status: "running" as const,
-    template: "MySQL Database",
-    cpu: "8 vCPU",
-    memory: "16 GB", 
-    storage: "500 GB",
-    ipAddress: "192.168.1.20",
-    createdAt: "2024-01-10"
-  },
-  {
-    id: "vm-003",
-    name: "dev-environment",
-    status: "stopped" as const,
-    template: "Ubuntu Server 22.04",
-    cpu: "2 vCPU",
-    memory: "4 GB",
-    storage: "50 GB", 
-    ipAddress: "192.168.1.30",
-    createdAt: "2024-01-20"
-  },
-  {
-    id: "vm-004",
-    name: "backup-server",
-    status: "pending" as const,
-    template: "Security Hardened Linux",
-    cpu: "2 vCPU",
-    memory: "4 GB",
-    storage: "200 GB",
-    ipAddress: "192.168.1.40", 
-    createdAt: "2024-01-25"
+// const virtualMachines = [
+//   {
+//     id: "vm-001",
+//     name: "production-web-01",
+//     status: "running" as const,
+//     template: "Ubuntu Server 22.04",
+//     cpu: "4 vCPU",
+//     memory: "8 GB",
+//     storage: "100 GB",
+//     ipAddress: "192.168.1.10",
+//     createdAt: "2024-01-15"
+//   },
+//   {
+//     id: "vm-002", 
+//     name: "database-primary",
+//     status: "running" as const,
+//     template: "MySQL Database",
+//     cpu: "8 vCPU",
+//     memory: "16 GB", 
+//     storage: "500 GB",
+//     ipAddress: "192.168.1.20",
+//     createdAt: "2024-01-10"
+//   },
+//   {
+//     id: "vm-003",
+//     name: "dev-environment",
+//     status: "stopped" as const,
+//     template: "Ubuntu Server 22.04",
+//     cpu: "2 vCPU",
+//     memory: "4 GB",
+//     storage: "50 GB", 
+//     ipAddress: "192.168.1.30",
+//     createdAt: "2024-01-20"
+//   },
+//   {
+//     id: "vm-004",
+//     name: "backup-server",
+//     status: "pending" as const,
+//     template: "Security Hardened Linux",
+//     cpu: "2 vCPU",
+//     memory: "4 GB",
+//     storage: "200 GB",
+//     ipAddress: "192.168.1.40", 
+//     createdAt: "2024-01-25"
+//   }
+// ];
+
+async function fetchWorkstations(): Promise<VirWS[]> {
+  try {
+    console.log("Getting virtual workstations!")
+    const response = await axios.get("http://localhost:5173/api/workstations");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching virtual workstations: ", error)
+    return []
   }
-];
+}
+
+const virtualMachines = await fetchWorkstations();
+console.log("type of virtual machines: ", virtualMachines)
 
 export const Dashboard = () => {
   const [searchTerm, setSearchTerm] = useState("");
